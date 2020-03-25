@@ -1,0 +1,29 @@
+dist: xenial
+language: cpp
+compiler: clang
+os: linux
+branches:
+  only:
+    - master
+addons:
+  apt:
+    packages:
+    - libboost-test-dev
+script:
+- cmake .
+- cmake --build .
+- cmake --build . --target test
+- cmake --build . --target package
+deploy:
+  provider: script
+  skip_cleanup: true
+  script:
+  - curl -f -T nickname-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb -uandrewsmetanin:$BINTRAY_API_KEY "https://api.bintray.com/content/andrewsmetanin/otus-cpp/nickname/0.0.$TRAVIS_BUILD_NUMBER/nickname-0.0.$TRAVIS_BUILD_NUMBER.deb;deb_distribution=xenial;deb_component=main;deb_architecture=amd64;publish=1"
+
+#deploy:
+#  provider: pages
+#  skip_cleanup: true
+#  local_dir: html
+#  github_token: $GH_REPO_TOKEN
+#  on:
+#    branch: master
