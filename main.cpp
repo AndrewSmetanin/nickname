@@ -186,36 +186,37 @@ public:
 
 int main()
 {
+
     PrefixNode root;
-    auto s = std::string("Alex");
-    root.add(s);
-    s = "Alexia";
-    root.add(s);
-    s = "Fedor";
-    root.add(s);
-    s = "Alexandr";
-    root.add(s);
-    s = "Alexandria";
-    root.add(s);
-    s = "Fedora";
-    root.add(s);
-    s = "Alf";
-    root.add(s);
-    s = "Amanda";
-    root.add(s);
-    s = "Fez";
-    root.add(s);
+    std::string s;
+
+    // auto s = std::string("Alex");
+    // root.add(s);
+    // s = "Alexia";
+    // root.add(s);
+    // s = "Fedor";
+    // root.add(s);
+    // s = "Alexandr";
+    // root.add(s);
+    // s = "Alexandria";
+    // root.add(s);
+    // s = "Fedora";
+    // root.add(s);
+    // s = "Alf";
+    // root.add(s);
+    // s = "Amanda";
+    // root.add(s);
+    // s = "Fez";
+    // root.add(s);
+
+    while(std::getline(std::cin,s))
+    {
+        root.add(s);
+    }
+
+    
 
     std::cout << root.getFullStructure() << std::endl;
-
-    // s = "Alexandria";
-    // std::cout<<root.getPrefix(s)<<std::endl;
-
-    // s = "Ale";
-    // auto ale_leaf = root.getLeafOf(s);
-    // auto ale_branch = ale_leaf->getNearestBranch();
-    // auto ale_prefix = ale_branch->getStringToRoot();
-    // std::cout << ale_prefix <<std::endl;
 
     auto v = root.getAllStringsWithPrefixes();
 
@@ -223,5 +224,6 @@ int main()
     {
         std::cout<<pr.first<<" "<<pr.second<<std::endl;
     }
+    
     return 0;
 }
