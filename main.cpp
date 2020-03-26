@@ -76,6 +76,7 @@ public:
     //(По последнему узлу можно однозначно восстановить строку просто поднимаясь от этого узла к корню)
     PrefixNode* getLeafOf(const std::string &s, size_t index = 0)
     {
+        //PRINT_PRETTY
         if (index == s.size() - 1)
             return children[s[index]];
         return children[s[index]]->getLeafOf(s, index + 1);
@@ -89,7 +90,14 @@ public:
             return children[last_key];
         else
         {
-            return parent->getNearestBranch(myKey);
+            if(parent)
+                return parent->getNearestBranch(myKey);
+            else
+            {
+                //Мы в корне
+                return this; //Значит в дереве находится единственная строка, а значит корень является ее префиксом
+            }
+            
         }
     }
 
@@ -97,7 +105,7 @@ public:
     std::string getStringToRoot() const
     {
         std::string result;
-        for(auto ptr = this;(ptr->myKey!=0 || ptr==this);ptr = ptr->parent)
+        for(auto ptr = this;((ptr->myKey!=0 || ptr==this)&&ptr->parent);ptr = ptr->parent)
         {
             result+=ptr->myKey;
         }
@@ -108,6 +116,10 @@ public:
     //Возвращает строку, показывающую строение дерева (поддерева)
     std::string getFullStructure(int offset = 0, bool goThrough = true) const
     {
+        //Проверка на пустое дерево
+        if(!parent && isLeaf())
+            return "";
+        
         auto whitespaces = std::string(offset, ' ');
         if(goThrough || !myKey)
         {    
@@ -148,11 +160,13 @@ public:
     //Возвращает префикс строки
     std::string getPrefix(const std::string& s)
     {
+        //PRINT_PRETTY
         return getLeafOf(s)->getNearestBranch()->getStringToRoot();
     }
 
     void writeLeafsToVector(std::vector<PrefixNode*>& out) const
     {
+        //std::cout << __PRETTY_FUNCTION__ << "[myKey = " << myKey << "]" <<std::endl;
         for (auto &child : children)
         {
             if(child.second->isLeaf())
@@ -168,6 +182,7 @@ public:
 
     std::vector<std::pair<std::string,std::string>> getAllStringsWithPrefixes() const
     {
+        //PRINT_PRETTY
         std::vector<PrefixNode*> leafs;
         writeLeafsToVector(leafs);
 
@@ -188,9 +203,11 @@ int main()
 {
 
     PrefixNode root;
-    std::string s;
+    std::string s = "";
 
-    // auto s = std::string("Alex");
+    //root.add(s);
+
+    // s = "Alex";
     // root.add(s);
     // s = "Alexia";
     // root.add(s);
